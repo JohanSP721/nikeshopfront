@@ -6,7 +6,7 @@
 	<link rel="icon" href="./img/favicon.ico" sizes="14x15" type="image/x-icon">
 	<link rel="stylesheet" href="./css/Global.css">
 	<link rel="stylesheet" href="./css/Login.css">
-	<title>NikeShop | Login</title>
+	<title>NikeShop | Log in</title>
 </head>
 <body>
 	<img class="nike-banner" alt="Nike" src="./img/nike-banner.jpg">
