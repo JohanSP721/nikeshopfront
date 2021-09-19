@@ -1,4 +1,4 @@
-package co.edu.unbosque.Proyecto;
+package co.edu.unbosque.nikeshopfront;
 
 import java.io.IOException;
 
@@ -31,6 +31,36 @@ public class DemoServlet extends HttpServlet {
             throws ServletException, IOException
     {
         response.getWriter().append("Served at: ").append(request.getContextPath());
+        
+        String consultar = request.getParameter("Consultar");
+        String crear = request.getParameter("Crear");
+        String actualizar = request.getParameter("Actualizar");
+        String borrar = request.getParameter("Borrar");
+        
+        if(consultar != null)
+        {
+        	
+        }
+        
+        if(crear != null)
+        {
+        	
+        }
+        
+        if(actualizar != null)
+        {
+        	
+        }
+        
+        if(borrar != null)
+        {
+        	
+        }
+    }
+    
+    public void crearUsuario(HttpServletRequest request, HttpServletResponse response)
+    {
+    	
     }
 
     /**
