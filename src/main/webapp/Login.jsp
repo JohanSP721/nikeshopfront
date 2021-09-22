@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
  <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,12 +9,30 @@
 	<title>NikeShop | Log in</title>
 </head>
 <body>
+	<%
+		try
+		{
+			boolean logged = (Boolean) session.getAttribute("logged");
+			
+			if( logged )
+			{
+				session.setAttribute("logged", true);
+				response.sendRedirect("./index.jsp");
+			}
+		}
+		
+		catch (Exception e)
+		{
+			response.sendRedirect("./Login.jsp");
+			session.setAttribute("logged", false);
+		}
+	%>
 	<img class="nike-banner" alt="Nike" src="./img/nike-banner.jpg">
 	<article class="login-container" >
-		<h1>Iniciar Sesión</h1>
-		<form class="login-form" method="post" action="./DemoServlet">
+		<h1>Iniciar SesiÃ³n</h1>
+		<form class="login-form" method="post" action="./LoginServlet">
 			<input name="user" class="login-input" placeholder="Usuario">
-			<input name="pass" type="password" class="login-input" placeholder="Contraseña">
+			<input name="pass" type="password" class="login-input" placeholder="ContraseÃ±a">
 			<%
 				try
 				{
@@ -22,7 +40,7 @@
 					
 					if( log )
 					{
-						out.println("<p class='login-error'>Usuario y/o Contraseña incorrectos</p>");
+						out.println("<p class='message error'>Usuario y/o ContraseÃ±a incorrectos</p>");
 						session.setAttribute("logIncorrect", null); 
 					}	
 				}
@@ -32,7 +50,7 @@
 					out.println(" ");
 				}
 			%>
-			<button class="login-button" type="submit">Iniciar Sesión</button>
+			<button class="login-button" type="submit">Iniciar SesiÃ³n</button>
 		</form>
 	</article>
 </body>

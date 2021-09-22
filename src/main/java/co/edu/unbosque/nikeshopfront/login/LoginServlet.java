@@ -1,16 +1,24 @@
-package co.edu.unbosque.nikeshopfront;
+package co.edu.unbosque.nikeshopfront.login;
 
 import java.io.IOException;
-
+import java.io.PrintWriter;
 import java.sql.*;
+import java.util.ArrayList;
+
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/DemoServlet")
-public class DemoServlet extends HttpServlet {
+import org.json.simple.parser.ParseException;
+
+import co.edu.unbosque.nikeshopfront.usuarios.TestJSON;
+import co.edu.unbosque.nikeshopfront.usuarios.Usuarios;
+
+@WebServlet("/LoginServlet")
+public class LoginServlet extends HttpServlet {
    
 	 /**
 	 * 
@@ -26,42 +34,6 @@ public class DemoServlet extends HttpServlet {
          // Nombre de usuario y contraseña de la base de datos, debe configurarse de acuerdo con los suyos
     static final String USER = "root";
     static final String PASS = "JoSp22132321/_";
-    
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
-        response.getWriter().append("Served at: ").append(request.getContextPath());
-        
-        String consultar = request.getParameter("Consultar");
-        String crear = request.getParameter("Crear");
-        String actualizar = request.getParameter("Actualizar");
-        String borrar = request.getParameter("Borrar");
-        
-        if(consultar != null)
-        {
-        	
-        }
-        
-        if(crear != null)
-        {
-        	
-        }
-        
-        if(actualizar != null)
-        {
-        	
-        }
-        
-        if(borrar != null)
-        {
-        	
-        }
-    }
-    
-    public void crearUsuario(HttpServletRequest request, HttpServletResponse response)
-    {
-    	
-    }
 
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
@@ -96,8 +68,8 @@ public class DemoServlet extends HttpServlet {
       
         	 if(rs.next())
         	 {
-                response.sendRedirect("./index.jsp");
-                request.getSession().setAttribute("logged", true);
+        		 request.getSession().setAttribute("logged", true);
+        		 response.sendRedirect("./index.jsp");
         	 }
         	 
         	 else

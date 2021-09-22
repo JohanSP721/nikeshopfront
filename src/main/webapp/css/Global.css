@@ -12,3 +12,15 @@ html {
 	width: 100vw;
 	height: 100vh;
 }
+
+.message {
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+	text-align: center;
+	font-size: 1.5rem;
+	font-weight: 700;
+}
+
+.error {
+	color: red;
+}

@@ -41,12 +41,6 @@ body {
 	margin: 1rem 0 3rem 0;
 }
 
-.login-error {
-	margin-bottom: 1rem;
-	font-size: 1.5rem;
-	font-weight: 700;
-}
-
 .login-button {
 	width: 75%;
 	padding: 1rem;

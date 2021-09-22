@@ -1,4 +1,4 @@
-package co.edu.unbosque.nikeshopfront;
+package co.edu.unbosque.nikeshopfront.usuarios;
 
 public class Usuarios
 {
