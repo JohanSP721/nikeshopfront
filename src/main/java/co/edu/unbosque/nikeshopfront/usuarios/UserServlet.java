@@ -1,6 +1,7 @@
 package co.edu.unbosque.nikeshopfront.usuarios;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,25 +25,31 @@ public class UserServlet extends HttpServlet {
         String crear = request.getParameter("Crear");
         String actualizar = request.getParameter("Actualizar");
         String borrar = request.getParameter("Borrar");
+        String listar = request.getParameter("Listar");
         
         if(consultar != null)
         {
         	buscarUsuario(request, response);
         }
         
-        if(crear != null)
+        else if(crear != null)
         {
         	crearUsuario(request, response);
         }
         
-        if(actualizar != null)
+        else if(actualizar != null)
         {
-        	
+        	actualizarUsuario(request, response);
         }
         
-        if(borrar != null)
+        else if(borrar != null)
         {
-        	
+        	eliminarUsuario(request, response);
+        }
+        
+        else if(listar != null)
+        {
+        	listarUsuarios(request, response);
         }
     }
     
@@ -104,7 +111,60 @@ public class UserServlet extends HttpServlet {
     
     public void actualizarUsuario(HttpServletRequest request, HttpServletResponse response)
     {
+    	if(request.getParameter("id-card") != "" && (request.getParameter("name") != "" || request.getParameter("email") != "" || request.getParameter("user") != "" || request.getParameter("password") != ""))
+    	{
+    		Usuarios usuario = new Usuarios();
+    		
+    		usuario.setCedula_usuario(Long.parseLong( request.getParameter("id-card") ));
+        	usuario.setEmail_usuario(request.getParameter("email").toString());
+        	usuario.setNombre_usuario(request.getParameter("name").toString());
+        	usuario.setPassword(request.getParameter("password").toString());
+        	usuario.setUsuario(request.getParameter("user").toString());
+    		
+    		int respuesta = 0;
+			
+			try
+			{
+				respuesta = TestJSON.putJSON(usuario);
+				
+				if(respuesta == 200)
+				{
+					request.getSession().setAttribute("userUpdate", true);
+		    		request.getSession().setAttribute("userNotExistUpdate", false);
+		    		
+		    		response.sendRedirect("./Usuarios.jsp");
+				}
+				
+				else
+				{
+					request.getSession().setAttribute("userUpdate", false);
+		    		request.getSession().setAttribute("userNotExistUpdate", true);
+		    		
+		    		response.sendRedirect("./Usuarios.jsp");
+				}
+			}
+			
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+    	}
     	
+    	else
+    	{
+    		request.getSession().setAttribute("userUpdate", false);
+    		request.getSession().setAttribute("userNotExistUpdate", false);
+    		
+			try
+			{
+				response.sendRedirect("./Usuarios.jsp");
+			}
+			
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
     }
     
     public void buscarUsuario(HttpServletRequest request, HttpServletResponse response)
@@ -136,7 +196,7 @@ public class UserServlet extends HttpServlet {
         	
         	try
         	{
-    			respuesta = TestJSON.getJSON(usuario);
+    			respuesta = TestJSON.getJSONById(usuario);
     			
     			if(respuesta.getCedula_usuario() != 0)
     			{
@@ -164,6 +224,72 @@ public class UserServlet extends HttpServlet {
     
     public void eliminarUsuario(HttpServletRequest request, HttpServletResponse response)
     {
+    	if(request.getParameter("id-card") != "")
+    	{
+    		Usuarios usuario = new Usuarios();
+    		
+    		usuario.setCedula_usuario(Long.parseLong( request.getParameter("id-card") ));
+    		
+    		int respuesta = 0;
+			
+			try
+			{
+				respuesta = TestJSON.deleteJSON(usuario);
+				
+				if(respuesta == 200)
+				{
+					request.getSession().setAttribute("userDelete", true);
+		    		request.getSession().setAttribute("userNotExistDelete", false);
+		    		
+		    		response.sendRedirect("./Usuarios.jsp");
+				}
+				
+				else
+				{
+					request.getSession().setAttribute("userDelete", false);
+		    		request.getSession().setAttribute("userNotExistDelete", true);
+		    		
+		    		response.sendRedirect("./Usuarios.jsp");
+				}
+			}
+			
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+    	}
     	
+    	else
+    	{
+    		request.getSession().setAttribute("userDelete", false);
+    		request.getSession().setAttribute("userNotExistDelete", false);
+    		
+			try
+			{
+				response.sendRedirect("./Usuarios.jsp");
+			}
+			
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+    }
+    
+    public void listarUsuarios(HttpServletRequest request, HttpServletResponse response)
+    {
+    	try
+    	{
+			ArrayList<Usuarios> lista = TestJSON.getJSON();
+			
+			request.getSession().setAttribute("lista", lista);
+			
+			response.sendRedirect("./Usuarios.jsp");
+		}
+    	
+    	catch (Exception e)
+    	{
+			e.printStackTrace();
+		}
     }
 }

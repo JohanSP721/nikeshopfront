@@ -27,31 +27,33 @@
 			session.setAttribute("logged", false);
 		}
 	%>
-	<img class="nike-banner" alt="Nike" src="./img/nike-banner.jpg">
-	<article class="login-container" >
-		<h1>Iniciar Sesión</h1>
-		<form class="login-form" method="post" action="./LoginServlet">
-			<input name="user" class="login-input" placeholder="Usuario">
-			<input name="pass" type="password" class="login-input" placeholder="Contraseña">
-			<%
-				try
-				{
-					boolean log = (Boolean) session.getAttribute("logIncorrect");
-					
-					if( log )
+	<section class="login">
+		<img class="nike-banner" alt="Nike" src="./img/nike-banner.jpg">
+		<article class="login-container" >
+			<h1>Iniciar Sesión</h1>
+			<form class="login-form" method="post" action="./LoginServlet">
+				<input name="user" class="login-input" placeholder="Usuario">
+				<input name="pass" type="password" class="login-input" placeholder="Contraseña">
+				<%
+					try
 					{
-						out.println("<p class='message error'>Usuario y/o Contraseña incorrectos</p>");
-						session.setAttribute("logIncorrect", null); 
-					}	
-				}
-			
-				catch (Exception e)
-				{
-					out.println(" ");
-				}
-			%>
-			<button class="login-button" type="submit">Iniciar Sesión</button>
-		</form>
-	</article>
+						boolean log = (Boolean) session.getAttribute("logIncorrect");
+						
+						if( log )
+						{
+							out.println("<p class='message error'>Usuario y/o Contraseña incorrectos</p>");
+							session.setAttribute("logIncorrect", null); 
+						}	
+					}
+				
+					catch (Exception e)
+					{
+						out.println(" ");
+					}
+				%>
+				<button class="login-button" type="submit">Iniciar Sesión</button>
+			</form>
+		</article>
+	</section>
 </body>
 </html>

@@ -7,35 +7,64 @@ import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import org.json.simple.parser.ParseException;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import com.google.gson.Gson;
 
 public class TestJSON
 {
 	private static URL url;
 	private static String sitio = "http://localhost:8080/";
 	
-	public static Usuarios parsingUsuarios(String json) throws ParseException
+	public static ArrayList<Usuarios> parsingListUsuarios(String json) throws ParseException
 	{
-		 JSONParser jsonParser = new JSONParser();
-		 Usuarios user = new Usuarios();
-		 
-		 JSONObject usuarios = (JSONObject) jsonParser.parse(json);
-		 
-		 if (usuarios != null)
-		 {	 
-			 user.setCedula_usuario((Long) usuarios.get("cedula_usuario")); 
-			 user.setEmail_usuario(usuarios.get("email_usuario") == null ? "" : usuarios.get("email_usuario").toString());
-			 user.setNombre_usuario(usuarios.get("nombre_usuario") == null ? "" : usuarios.get("nombre_usuario").toString());
-			 user.setPassword(usuarios.get("password") == null ? "" : usuarios.get("password").toString());
-			 user.setUsuario(usuarios.get("usuario") == null ? "" : usuarios.get("usuario").toString());
-		 }
-		 
-		 return user;
+		JSONParser jsonParser = new JSONParser();
+		ArrayList<Usuarios> lista = new ArrayList<Usuarios>();
+		JSONArray usuarios = (JSONArray) jsonParser.parse(json);
+		Iterator i = usuarios.iterator();
+		
+		while (i.hasNext())
+		{
+			JSONObject innerObj = (JSONObject) i.next();
+			Usuarios usuario = new Usuarios();
+			
+			usuario.setCedula_usuario(Long.parseLong(innerObj.get("cedula_usuario").toString())); 
+			usuario.setEmail_usuario(innerObj.get("email_usuario").toString());
+			usuario.setNombre_usuario(innerObj.get("nombre_usuario").toString());
+			usuario.setPassword(innerObj.get("password").toString());
+			usuario.setUsuario(innerObj.get("usuario").toString());
+			
+			lista.add(usuario);
+		}
+		return lista;
 	}
 	
-	public static Usuarios getJSON(Usuarios usuario) throws IOException, ParseException
+	public static Usuarios parsingUsuarios(String json) throws ParseException
+	{
+		JSONParser jsonParser = new JSONParser();
+		JSONObject usuarios = (JSONObject) jsonParser.parse(json);
+		
+		Usuarios usuario = new Usuarios();
+		
+		if (usuarios != null)
+		{	
+			usuario.setCedula_usuario(Long.parseLong(usuarios.get("cedula_usuario").toString())); 
+			usuario.setEmail_usuario(usuarios.get("email_usuario").toString());
+			usuario.setNombre_usuario(usuarios.get("nombre_usuario").toString());
+			usuario.setPassword(usuarios.get("password").toString());
+			usuario.setUsuario(usuarios.get("usuario").toString());
+		}
+		
+		return usuario;
+	}
+	
+	public static Usuarios getJSONById(Usuarios usuario) throws IOException, ParseException
 	{
 		url = new URL(sitio + "usuarios/listar/" + usuario.getCedula_usuario());
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
@@ -51,12 +80,38 @@ public class TestJSON
 		{
 			json += (char)inp[i];
 		}
-		
+
 		Usuarios user = new Usuarios();
+
 		user = parsingUsuarios(json);
 		http.disconnect();
 		
 		return user;
+	}
+	
+	public static ArrayList<Usuarios> getJSON() throws IOException, ParseException
+	{
+		url = new URL(sitio + "usuarios/listar");
+		HttpURLConnection http = (HttpURLConnection)url.openConnection();
+		
+		http.setRequestMethod("GET");
+		http.setRequestProperty("Accept", "application/json");
+		
+		InputStream respuesta = http.getInputStream();
+		byte[] inp = respuesta.readAllBytes();
+		String json = "";
+		
+		for (int i = 0; i<inp.length ; i++)
+		{
+			json += (char)inp[i];
+		}
+		
+		ArrayList<Usuarios> lista = new ArrayList<Usuarios>();
+		
+		lista = parsingListUsuarios(json);
+		http.disconnect();
+		
+		return lista;
 	}
 	
 	public static Usuarios postJSON(Usuarios usuario) throws IOException
@@ -81,11 +136,11 @@ public class TestJSON
 			http.setRequestProperty("Content-Type", "application/json");
 			
 			String data = "{"
-			+ "\"cedula_usuario\":\""+ usuario.getCedula_usuario()
-			+"\",\"email_usuario\": \""+usuario.getEmail_usuario()
-			+"\",\"nombre_usuario\": \""+usuario.getNombre_usuario()
-			+"\",\"password\":\""+usuario.getPassword()
-			+"\",\"usuario\":\""+usuario.getUsuario()
+			+ "\"cedula_usuario\":\"" + usuario.getCedula_usuario()
+			+ "\",\"email_usuario\": \"" + usuario.getEmail_usuario()
+			+ "\",\"nombre_usuario\": \"" + usuario.getNombre_usuario()
+			+ "\",\"password\":\"" + usuario.getPassword()
+			+ "\",\"usuario\":\"" + usuario.getUsuario()
 			+ "\"}";
 			
 			byte[] out = data.getBytes(StandardCharsets.UTF_8);
@@ -103,6 +158,7 @@ public class TestJSON
 			}
 			
 			Usuarios user = new Usuarios();
+			
 			try
 			{
 				user = parsingUsuarios(json);
@@ -139,12 +195,9 @@ public class TestJSON
 			http.setRequestProperty("Accept", "application/json");
 			http.setRequestProperty("Content-Type", "application/json");
 			
-			String data = "{"
-			+"\",\"email_usuario\": \""+usuario.getEmail_usuario()
-			+"\",\"nombre_usuario\": \""+usuario.getNombre_usuario()
-			+"\",\"password\":\""+usuario.getPassword()
-			+"\",\"usuario\":\""+usuario.getUsuario()
-			+ "\"}";
+			Gson gson = new Gson();
+			
+			String data = gson.toJson(usuario);
 			
 			byte[] out = data.getBytes(StandardCharsets.UTF_8);
 			OutputStream stream = http.getOutputStream();
