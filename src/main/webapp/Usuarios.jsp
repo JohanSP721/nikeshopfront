@@ -34,7 +34,7 @@
 	
 	<%@ include file="./Header.jsp" %>
 	
-	<form action="./UserServlet" class="usuarios-form" method="get">
+	<form action="./UserServlet" class="usuarios-form" method="post">
 		<article class="usuarios-inputs">
 			<input type="number" class="usuarios-input" name="id-card" placeholder="Cédula">
 			<input type="text" class="usuarios-input" name="name" placeholder="Nombre Completo">

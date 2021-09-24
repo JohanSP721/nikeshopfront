@@ -151,7 +151,6 @@ public class TestJSON
 			byte[] inp = respuesta.readAllBytes();
 			String json = "";
 			
-			
 			for (int i = 0; i<inp.length ; i++)
 			{
 				json += (char)inp[i];

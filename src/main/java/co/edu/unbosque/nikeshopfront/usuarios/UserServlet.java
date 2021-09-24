@@ -18,7 +18,7 @@ public class UserServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {    
         String consultar = request.getParameter("Consultar");
@@ -224,8 +224,24 @@ public class UserServlet extends HttpServlet {
     
     public void eliminarUsuario(HttpServletRequest request, HttpServletResponse response)
     {
-    	if(request.getParameter("id-card") != "" || Long.parseLong(request.getParameter("id-card")) != 1)
+    	if(request.getParameter("id-card") == "" || Long.parseLong(request.getParameter("id-card")) <= 1)
     	{
+    		request.getSession().setAttribute("userDelete", false);
+    		request.getSession().setAttribute("userNotExistDelete", false);
+    		
+			try
+			{
+				response.sendRedirect("./Usuarios.jsp");
+			}
+			
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+    	}
+    	
+    	else
+    	{		
     		Usuarios usuario = new Usuarios();
     		
     		usuario.setCedula_usuario(Long.parseLong( request.getParameter("id-card") ));
@@ -254,22 +270,6 @@ public class UserServlet extends HttpServlet {
 			}
 			
 			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-    	}
-    	
-    	else
-    	{
-    		request.getSession().setAttribute("userDelete", false);
-    		request.getSession().setAttribute("userNotExistDelete", false);
-    		
-			try
-			{
-				response.sendRedirect("./Usuarios.jsp");
-			}
-			
-			catch (IOException e)
 			{
 				e.printStackTrace();
 			}
