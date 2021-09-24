@@ -224,7 +224,7 @@ public class UserServlet extends HttpServlet {
     
     public void eliminarUsuario(HttpServletRequest request, HttpServletResponse response)
     {
-    	if(request.getParameter("id-card") != "")
+    	if(request.getParameter("id-card") != "" || Long.parseLong(request.getParameter("id-card")) != 1)
     	{
     		Usuarios usuario = new Usuarios();
     		

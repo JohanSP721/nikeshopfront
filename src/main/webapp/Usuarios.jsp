@@ -183,7 +183,7 @@
 					out.println("<p class='message error'>Datos faltantes</p>");
 
 					session.setAttribute("userUpdate", null);
-					session.setAttribute("userNotExist", null);
+					session.setAttribute("userNotExistUpdate", null);
 				}
 
 				else if(update && !notExist)
@@ -191,7 +191,7 @@
 					out.println("<p class='message'>Datos del Usuario Actualizados</p>");
 
 					session.setAttribute("userUpdate", null);
-					session.setAttribute("userNotExist", null);
+					session.setAttribute("userNotExistUpdate", null);
 				}
 
 				else if(!update && notExist )
@@ -199,7 +199,7 @@
 					out.println("<p class='message error'>Usuario Inexistente</p>");
 
 					session.setAttribute("userUpdate", null);
-					session.setAttribute("userNotExist", null);
+					session.setAttribute("userNotExistUpdate", null);
 				}
 			}
 			
@@ -219,7 +219,7 @@
 					out.println("<p class='message error'>Datos faltantes</p>");
 
 					session.setAttribute("userUpdate", null);
-					session.setAttribute("userNotExist", null);
+					session.setAttribute("userNotExistDelete", null);
 				}
 
 				else if(update && !notExist)
@@ -227,7 +227,7 @@
 					out.println("<p class='message'>Datos del Usuario Borrados</p>");
 
 					session.setAttribute("userUpdate", null);
-					session.setAttribute("userNotExist", null);
+					session.setAttribute("userNotExistDelete", null);
 				}
 
 				else if(!update && notExist )
@@ -235,7 +235,7 @@
 					out.println("<p class='message error'>Cédula Errada</p>");
 
 					session.setAttribute("userUpdate", null);
-					session.setAttribute("userNotExist", null);
+					session.setAttribute("userNotExistDelete", null);
 				}
 			}
 			
